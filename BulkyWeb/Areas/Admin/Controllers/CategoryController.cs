@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Bulky.DataAccess.Repository.IRepository;
 
 
-namespace BulkyWeb.Controllers
+namespace BulkyWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
 
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryController(IUnitOfWork unitOfWork) { 
+        public CategoryController(IUnitOfWork unitOfWork)
+        {
 
             _unitOfWork = unitOfWork;
         }
@@ -28,7 +30,7 @@ namespace BulkyWeb.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            if(obj.Name == obj.DisplayOrder.ToString())
+            if (obj.Name == obj.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("name", "The display order cannot exactly match the name");
             }
@@ -43,11 +45,11 @@ namespace BulkyWeb.Controllers
         }
         public IActionResult Edit(int? id)
         {
-            if (id==null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Category categoryFromDb = _unitOfWork.Category.Get(u=>u.Id==id);
+            Category categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
             if (categoryFromDb == null)
             {
                 return NotFound();
